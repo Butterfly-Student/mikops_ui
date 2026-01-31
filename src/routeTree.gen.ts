@@ -28,16 +28,34 @@ import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authen
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
+import { Route as AuthenticatedMikrotikIndexRouteImport } from './routes/_authenticated/mikrotik/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
 import { Route as AuthenticatedChatsIndexRouteImport } from './routes/_authenticated/chats/index'
 import { Route as AuthenticatedAppsIndexRouteImport } from './routes/_authenticated/apps/index'
 import { Route as ClerkAuthenticatedUserManagementRouteImport } from './routes/clerk/_authenticated/user-management'
 import { Route as ClerkauthSignUpRouteImport } from './routes/clerk/(auth)/sign-up'
 import { Route as ClerkauthSignInRouteImport } from './routes/clerk/(auth)/sign-in'
+import { Route as AuthenticatedUsersSessionsRouteImport } from './routes/_authenticated/users/sessions'
+import { Route as AuthenticatedUsersRolesRouteImport } from './routes/_authenticated/users/roles'
+import { Route as AuthenticatedUsersPermissionsRouteImport } from './routes/_authenticated/users/permissions'
+import { Route as AuthenticatedSystemTagihanRouteImport } from './routes/_authenticated/system/tagihan'
+import { Route as AuthenticatedSystemPelangganRouteImport } from './routes/_authenticated/system/pelanggan'
+import { Route as AuthenticatedSystemLogsRouteImport } from './routes/_authenticated/system/logs'
+import { Route as AuthenticatedSystemLaporanRouteImport } from './routes/_authenticated/system/laporan'
+import { Route as AuthenticatedSystemKasRouteImport } from './routes/_authenticated/system/kas'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings/notifications'
 import { Route as AuthenticatedSettingsDisplayRouteImport } from './routes/_authenticated/settings/display'
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
+import { Route as AuthenticatedRouterLogsRouteImport } from './routes/_authenticated/router/logs'
+import { Route as AuthenticatedPppSecretsRouteImport } from './routes/_authenticated/ppp/secrets'
+import { Route as AuthenticatedPppInactivesRouteImport } from './routes/_authenticated/ppp/inactives'
+import { Route as AuthenticatedPppActivesRouteImport } from './routes/_authenticated/ppp/actives'
+import { Route as AuthenticatedHotspotUsersInactiveRouteImport } from './routes/_authenticated/hotspot/users-inactive'
+import { Route as AuthenticatedHotspotUsersActiveRouteImport } from './routes/_authenticated/hotspot/users-active'
+import { Route as AuthenticatedHotspotUsersRouteImport } from './routes/_authenticated/hotspot/users'
+import { Route as AuthenticatedHotspotUserProfilesRouteImport } from './routes/_authenticated/hotspot/user-profiles'
+import { Route as AuthenticatedHotspotHostsRouteImport } from './routes/_authenticated/hotspot/hosts'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 
 const ClerkRouteRoute = ClerkRouteRouteImport.update({
@@ -134,6 +152,12 @@ const AuthenticatedSettingsIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
+const AuthenticatedMikrotikIndexRoute =
+  AuthenticatedMikrotikIndexRouteImport.update({
+    id: '/mikrotik/',
+    path: '/mikrotik/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedHelpCenterIndexRoute =
   AuthenticatedHelpCenterIndexRouteImport.update({
     id: '/help-center/',
@@ -166,6 +190,51 @@ const ClerkauthSignInRoute = ClerkauthSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => ClerkauthRouteRoute,
 } as any)
+const AuthenticatedUsersSessionsRoute =
+  AuthenticatedUsersSessionsRouteImport.update({
+    id: '/users/sessions',
+    path: '/users/sessions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedUsersRolesRoute = AuthenticatedUsersRolesRouteImport.update({
+  id: '/users/roles',
+  path: '/users/roles',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedUsersPermissionsRoute =
+  AuthenticatedUsersPermissionsRouteImport.update({
+    id: '/users/permissions',
+    path: '/users/permissions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSystemTagihanRoute =
+  AuthenticatedSystemTagihanRouteImport.update({
+    id: '/system/tagihan',
+    path: '/system/tagihan',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSystemPelangganRoute =
+  AuthenticatedSystemPelangganRouteImport.update({
+    id: '/system/pelanggan',
+    path: '/system/pelanggan',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSystemLogsRoute = AuthenticatedSystemLogsRouteImport.update({
+  id: '/system/logs',
+  path: '/system/logs',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSystemLaporanRoute =
+  AuthenticatedSystemLaporanRouteImport.update({
+    id: '/system/laporan',
+    path: '/system/laporan',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSystemKasRoute = AuthenticatedSystemKasRouteImport.update({
+  id: '/system/kas',
+  path: '/system/kas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSettingsNotificationsRoute =
   AuthenticatedSettingsNotificationsRouteImport.update({
     id: '/notifications',
@@ -190,6 +259,57 @@ const AuthenticatedSettingsAccountRoute =
     path: '/account',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
+const AuthenticatedRouterLogsRoute = AuthenticatedRouterLogsRouteImport.update({
+  id: '/router/logs',
+  path: '/router/logs',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPppSecretsRoute = AuthenticatedPppSecretsRouteImport.update({
+  id: '/ppp/secrets',
+  path: '/ppp/secrets',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPppInactivesRoute =
+  AuthenticatedPppInactivesRouteImport.update({
+    id: '/ppp/inactives',
+    path: '/ppp/inactives',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPppActivesRoute = AuthenticatedPppActivesRouteImport.update({
+  id: '/ppp/actives',
+  path: '/ppp/actives',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedHotspotUsersInactiveRoute =
+  AuthenticatedHotspotUsersInactiveRouteImport.update({
+    id: '/hotspot/users-inactive',
+    path: '/hotspot/users-inactive',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedHotspotUsersActiveRoute =
+  AuthenticatedHotspotUsersActiveRouteImport.update({
+    id: '/hotspot/users-active',
+    path: '/hotspot/users-active',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedHotspotUsersRoute =
+  AuthenticatedHotspotUsersRouteImport.update({
+    id: '/hotspot/users',
+    path: '/hotspot/users',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedHotspotUserProfilesRoute =
+  AuthenticatedHotspotUserProfilesRouteImport.update({
+    id: '/hotspot/user-profiles',
+    path: '/hotspot/user-profiles',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedHotspotHostsRoute =
+  AuthenticatedHotspotHostsRouteImport.update({
+    id: '/hotspot/hosts',
+    path: '/hotspot/hosts',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedErrorsErrorRoute =
   AuthenticatedErrorsErrorRouteImport.update({
     id: '/errors/$error',
@@ -212,16 +332,34 @@ export interface FileRoutesByFullPath {
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
+  '/hotspot/hosts': typeof AuthenticatedHotspotHostsRoute
+  '/hotspot/user-profiles': typeof AuthenticatedHotspotUserProfilesRoute
+  '/hotspot/users': typeof AuthenticatedHotspotUsersRoute
+  '/hotspot/users-active': typeof AuthenticatedHotspotUsersActiveRoute
+  '/hotspot/users-inactive': typeof AuthenticatedHotspotUsersInactiveRoute
+  '/ppp/actives': typeof AuthenticatedPppActivesRoute
+  '/ppp/inactives': typeof AuthenticatedPppInactivesRoute
+  '/ppp/secrets': typeof AuthenticatedPppSecretsRoute
+  '/router/logs': typeof AuthenticatedRouterLogsRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/system/kas': typeof AuthenticatedSystemKasRoute
+  '/system/laporan': typeof AuthenticatedSystemLaporanRoute
+  '/system/logs': typeof AuthenticatedSystemLogsRoute
+  '/system/pelanggan': typeof AuthenticatedSystemPelangganRoute
+  '/system/tagihan': typeof AuthenticatedSystemTagihanRoute
+  '/users/permissions': typeof AuthenticatedUsersPermissionsRoute
+  '/users/roles': typeof AuthenticatedUsersRolesRoute
+  '/users/sessions': typeof AuthenticatedUsersSessionsRoute
   '/clerk/sign-in': typeof ClerkauthSignInRoute
   '/clerk/sign-up': typeof ClerkauthSignUpRoute
   '/clerk/user-management': typeof ClerkAuthenticatedUserManagementRoute
   '/apps': typeof AuthenticatedAppsIndexRoute
   '/chats': typeof AuthenticatedChatsIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
+  '/mikrotik': typeof AuthenticatedMikrotikIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -240,16 +378,34 @@ export interface FileRoutesByTo {
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
+  '/hotspot/hosts': typeof AuthenticatedHotspotHostsRoute
+  '/hotspot/user-profiles': typeof AuthenticatedHotspotUserProfilesRoute
+  '/hotspot/users': typeof AuthenticatedHotspotUsersRoute
+  '/hotspot/users-active': typeof AuthenticatedHotspotUsersActiveRoute
+  '/hotspot/users-inactive': typeof AuthenticatedHotspotUsersInactiveRoute
+  '/ppp/actives': typeof AuthenticatedPppActivesRoute
+  '/ppp/inactives': typeof AuthenticatedPppInactivesRoute
+  '/ppp/secrets': typeof AuthenticatedPppSecretsRoute
+  '/router/logs': typeof AuthenticatedRouterLogsRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/system/kas': typeof AuthenticatedSystemKasRoute
+  '/system/laporan': typeof AuthenticatedSystemLaporanRoute
+  '/system/logs': typeof AuthenticatedSystemLogsRoute
+  '/system/pelanggan': typeof AuthenticatedSystemPelangganRoute
+  '/system/tagihan': typeof AuthenticatedSystemTagihanRoute
+  '/users/permissions': typeof AuthenticatedUsersPermissionsRoute
+  '/users/roles': typeof AuthenticatedUsersRolesRoute
+  '/users/sessions': typeof AuthenticatedUsersSessionsRoute
   '/clerk/sign-in': typeof ClerkauthSignInRoute
   '/clerk/sign-up': typeof ClerkauthSignUpRoute
   '/clerk/user-management': typeof ClerkAuthenticatedUserManagementRoute
   '/apps': typeof AuthenticatedAppsIndexRoute
   '/chats': typeof AuthenticatedChatsIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
+  '/mikrotik': typeof AuthenticatedMikrotikIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -273,16 +429,34 @@ export interface FileRoutesById {
   '/(errors)/503': typeof errors503Route
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
+  '/_authenticated/hotspot/hosts': typeof AuthenticatedHotspotHostsRoute
+  '/_authenticated/hotspot/user-profiles': typeof AuthenticatedHotspotUserProfilesRoute
+  '/_authenticated/hotspot/users': typeof AuthenticatedHotspotUsersRoute
+  '/_authenticated/hotspot/users-active': typeof AuthenticatedHotspotUsersActiveRoute
+  '/_authenticated/hotspot/users-inactive': typeof AuthenticatedHotspotUsersInactiveRoute
+  '/_authenticated/ppp/actives': typeof AuthenticatedPppActivesRoute
+  '/_authenticated/ppp/inactives': typeof AuthenticatedPppInactivesRoute
+  '/_authenticated/ppp/secrets': typeof AuthenticatedPppSecretsRoute
+  '/_authenticated/router/logs': typeof AuthenticatedRouterLogsRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/_authenticated/system/kas': typeof AuthenticatedSystemKasRoute
+  '/_authenticated/system/laporan': typeof AuthenticatedSystemLaporanRoute
+  '/_authenticated/system/logs': typeof AuthenticatedSystemLogsRoute
+  '/_authenticated/system/pelanggan': typeof AuthenticatedSystemPelangganRoute
+  '/_authenticated/system/tagihan': typeof AuthenticatedSystemTagihanRoute
+  '/_authenticated/users/permissions': typeof AuthenticatedUsersPermissionsRoute
+  '/_authenticated/users/roles': typeof AuthenticatedUsersRolesRoute
+  '/_authenticated/users/sessions': typeof AuthenticatedUsersSessionsRoute
   '/clerk/(auth)/sign-in': typeof ClerkauthSignInRoute
   '/clerk/(auth)/sign-up': typeof ClerkauthSignUpRoute
   '/clerk/_authenticated/user-management': typeof ClerkAuthenticatedUserManagementRoute
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
+  '/_authenticated/mikrotik/': typeof AuthenticatedMikrotikIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
@@ -304,16 +478,34 @@ export interface FileRouteTypes {
     | '/503'
     | '/'
     | '/errors/$error'
+    | '/hotspot/hosts'
+    | '/hotspot/user-profiles'
+    | '/hotspot/users'
+    | '/hotspot/users-active'
+    | '/hotspot/users-inactive'
+    | '/ppp/actives'
+    | '/ppp/inactives'
+    | '/ppp/secrets'
+    | '/router/logs'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
+    | '/system/kas'
+    | '/system/laporan'
+    | '/system/logs'
+    | '/system/pelanggan'
+    | '/system/tagihan'
+    | '/users/permissions'
+    | '/users/roles'
+    | '/users/sessions'
     | '/clerk/sign-in'
     | '/clerk/sign-up'
     | '/clerk/user-management'
     | '/apps'
     | '/chats'
     | '/help-center'
+    | '/mikrotik'
     | '/settings/'
     | '/tasks'
     | '/users'
@@ -332,16 +524,34 @@ export interface FileRouteTypes {
     | '/503'
     | '/'
     | '/errors/$error'
+    | '/hotspot/hosts'
+    | '/hotspot/user-profiles'
+    | '/hotspot/users'
+    | '/hotspot/users-active'
+    | '/hotspot/users-inactive'
+    | '/ppp/actives'
+    | '/ppp/inactives'
+    | '/ppp/secrets'
+    | '/router/logs'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
+    | '/system/kas'
+    | '/system/laporan'
+    | '/system/logs'
+    | '/system/pelanggan'
+    | '/system/tagihan'
+    | '/users/permissions'
+    | '/users/roles'
+    | '/users/sessions'
     | '/clerk/sign-in'
     | '/clerk/sign-up'
     | '/clerk/user-management'
     | '/apps'
     | '/chats'
     | '/help-center'
+    | '/mikrotik'
     | '/settings'
     | '/tasks'
     | '/users'
@@ -364,16 +574,34 @@ export interface FileRouteTypes {
     | '/(errors)/503'
     | '/_authenticated/'
     | '/_authenticated/errors/$error'
+    | '/_authenticated/hotspot/hosts'
+    | '/_authenticated/hotspot/user-profiles'
+    | '/_authenticated/hotspot/users'
+    | '/_authenticated/hotspot/users-active'
+    | '/_authenticated/hotspot/users-inactive'
+    | '/_authenticated/ppp/actives'
+    | '/_authenticated/ppp/inactives'
+    | '/_authenticated/ppp/secrets'
+    | '/_authenticated/router/logs'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
     | '/_authenticated/settings/display'
     | '/_authenticated/settings/notifications'
+    | '/_authenticated/system/kas'
+    | '/_authenticated/system/laporan'
+    | '/_authenticated/system/logs'
+    | '/_authenticated/system/pelanggan'
+    | '/_authenticated/system/tagihan'
+    | '/_authenticated/users/permissions'
+    | '/_authenticated/users/roles'
+    | '/_authenticated/users/sessions'
     | '/clerk/(auth)/sign-in'
     | '/clerk/(auth)/sign-up'
     | '/clerk/_authenticated/user-management'
     | '/_authenticated/apps/'
     | '/_authenticated/chats/'
     | '/_authenticated/help-center/'
+    | '/_authenticated/mikrotik/'
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
@@ -529,6 +757,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
+    '/_authenticated/mikrotik/': {
+      id: '/_authenticated/mikrotik/'
+      path: '/mikrotik'
+      fullPath: '/mikrotik'
+      preLoaderRoute: typeof AuthenticatedMikrotikIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/help-center/': {
       id: '/_authenticated/help-center/'
       path: '/help-center'
@@ -571,6 +806,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClerkauthSignInRouteImport
       parentRoute: typeof ClerkauthRouteRoute
     }
+    '/_authenticated/users/sessions': {
+      id: '/_authenticated/users/sessions'
+      path: '/users/sessions'
+      fullPath: '/users/sessions'
+      preLoaderRoute: typeof AuthenticatedUsersSessionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/users/roles': {
+      id: '/_authenticated/users/roles'
+      path: '/users/roles'
+      fullPath: '/users/roles'
+      preLoaderRoute: typeof AuthenticatedUsersRolesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/users/permissions': {
+      id: '/_authenticated/users/permissions'
+      path: '/users/permissions'
+      fullPath: '/users/permissions'
+      preLoaderRoute: typeof AuthenticatedUsersPermissionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/system/tagihan': {
+      id: '/_authenticated/system/tagihan'
+      path: '/system/tagihan'
+      fullPath: '/system/tagihan'
+      preLoaderRoute: typeof AuthenticatedSystemTagihanRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/system/pelanggan': {
+      id: '/_authenticated/system/pelanggan'
+      path: '/system/pelanggan'
+      fullPath: '/system/pelanggan'
+      preLoaderRoute: typeof AuthenticatedSystemPelangganRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/system/logs': {
+      id: '/_authenticated/system/logs'
+      path: '/system/logs'
+      fullPath: '/system/logs'
+      preLoaderRoute: typeof AuthenticatedSystemLogsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/system/laporan': {
+      id: '/_authenticated/system/laporan'
+      path: '/system/laporan'
+      fullPath: '/system/laporan'
+      preLoaderRoute: typeof AuthenticatedSystemLaporanRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/system/kas': {
+      id: '/_authenticated/system/kas'
+      path: '/system/kas'
+      fullPath: '/system/kas'
+      preLoaderRoute: typeof AuthenticatedSystemKasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings/notifications': {
       id: '/_authenticated/settings/notifications'
       path: '/notifications'
@@ -598,6 +889,69 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings/account'
       preLoaderRoute: typeof AuthenticatedSettingsAccountRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
+    }
+    '/_authenticated/router/logs': {
+      id: '/_authenticated/router/logs'
+      path: '/router/logs'
+      fullPath: '/router/logs'
+      preLoaderRoute: typeof AuthenticatedRouterLogsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ppp/secrets': {
+      id: '/_authenticated/ppp/secrets'
+      path: '/ppp/secrets'
+      fullPath: '/ppp/secrets'
+      preLoaderRoute: typeof AuthenticatedPppSecretsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ppp/inactives': {
+      id: '/_authenticated/ppp/inactives'
+      path: '/ppp/inactives'
+      fullPath: '/ppp/inactives'
+      preLoaderRoute: typeof AuthenticatedPppInactivesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ppp/actives': {
+      id: '/_authenticated/ppp/actives'
+      path: '/ppp/actives'
+      fullPath: '/ppp/actives'
+      preLoaderRoute: typeof AuthenticatedPppActivesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/hotspot/users-inactive': {
+      id: '/_authenticated/hotspot/users-inactive'
+      path: '/hotspot/users-inactive'
+      fullPath: '/hotspot/users-inactive'
+      preLoaderRoute: typeof AuthenticatedHotspotUsersInactiveRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/hotspot/users-active': {
+      id: '/_authenticated/hotspot/users-active'
+      path: '/hotspot/users-active'
+      fullPath: '/hotspot/users-active'
+      preLoaderRoute: typeof AuthenticatedHotspotUsersActiveRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/hotspot/users': {
+      id: '/_authenticated/hotspot/users'
+      path: '/hotspot/users'
+      fullPath: '/hotspot/users'
+      preLoaderRoute: typeof AuthenticatedHotspotUsersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/hotspot/user-profiles': {
+      id: '/_authenticated/hotspot/user-profiles'
+      path: '/hotspot/user-profiles'
+      fullPath: '/hotspot/user-profiles'
+      preLoaderRoute: typeof AuthenticatedHotspotUserProfilesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/hotspot/hosts': {
+      id: '/_authenticated/hotspot/hosts'
+      path: '/hotspot/hosts'
+      fullPath: '/hotspot/hosts'
+      preLoaderRoute: typeof AuthenticatedHotspotHostsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/errors/$error': {
       id: '/_authenticated/errors/$error'
@@ -636,9 +990,27 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
+  AuthenticatedHotspotHostsRoute: typeof AuthenticatedHotspotHostsRoute
+  AuthenticatedHotspotUserProfilesRoute: typeof AuthenticatedHotspotUserProfilesRoute
+  AuthenticatedHotspotUsersRoute: typeof AuthenticatedHotspotUsersRoute
+  AuthenticatedHotspotUsersActiveRoute: typeof AuthenticatedHotspotUsersActiveRoute
+  AuthenticatedHotspotUsersInactiveRoute: typeof AuthenticatedHotspotUsersInactiveRoute
+  AuthenticatedPppActivesRoute: typeof AuthenticatedPppActivesRoute
+  AuthenticatedPppInactivesRoute: typeof AuthenticatedPppInactivesRoute
+  AuthenticatedPppSecretsRoute: typeof AuthenticatedPppSecretsRoute
+  AuthenticatedRouterLogsRoute: typeof AuthenticatedRouterLogsRoute
+  AuthenticatedSystemKasRoute: typeof AuthenticatedSystemKasRoute
+  AuthenticatedSystemLaporanRoute: typeof AuthenticatedSystemLaporanRoute
+  AuthenticatedSystemLogsRoute: typeof AuthenticatedSystemLogsRoute
+  AuthenticatedSystemPelangganRoute: typeof AuthenticatedSystemPelangganRoute
+  AuthenticatedSystemTagihanRoute: typeof AuthenticatedSystemTagihanRoute
+  AuthenticatedUsersPermissionsRoute: typeof AuthenticatedUsersPermissionsRoute
+  AuthenticatedUsersRolesRoute: typeof AuthenticatedUsersRolesRoute
+  AuthenticatedUsersSessionsRoute: typeof AuthenticatedUsersSessionsRoute
   AuthenticatedAppsIndexRoute: typeof AuthenticatedAppsIndexRoute
   AuthenticatedChatsIndexRoute: typeof AuthenticatedChatsIndexRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
+  AuthenticatedMikrotikIndexRoute: typeof AuthenticatedMikrotikIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
 }
@@ -647,9 +1019,28 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
+  AuthenticatedHotspotHostsRoute: AuthenticatedHotspotHostsRoute,
+  AuthenticatedHotspotUserProfilesRoute: AuthenticatedHotspotUserProfilesRoute,
+  AuthenticatedHotspotUsersRoute: AuthenticatedHotspotUsersRoute,
+  AuthenticatedHotspotUsersActiveRoute: AuthenticatedHotspotUsersActiveRoute,
+  AuthenticatedHotspotUsersInactiveRoute:
+    AuthenticatedHotspotUsersInactiveRoute,
+  AuthenticatedPppActivesRoute: AuthenticatedPppActivesRoute,
+  AuthenticatedPppInactivesRoute: AuthenticatedPppInactivesRoute,
+  AuthenticatedPppSecretsRoute: AuthenticatedPppSecretsRoute,
+  AuthenticatedRouterLogsRoute: AuthenticatedRouterLogsRoute,
+  AuthenticatedSystemKasRoute: AuthenticatedSystemKasRoute,
+  AuthenticatedSystemLaporanRoute: AuthenticatedSystemLaporanRoute,
+  AuthenticatedSystemLogsRoute: AuthenticatedSystemLogsRoute,
+  AuthenticatedSystemPelangganRoute: AuthenticatedSystemPelangganRoute,
+  AuthenticatedSystemTagihanRoute: AuthenticatedSystemTagihanRoute,
+  AuthenticatedUsersPermissionsRoute: AuthenticatedUsersPermissionsRoute,
+  AuthenticatedUsersRolesRoute: AuthenticatedUsersRolesRoute,
+  AuthenticatedUsersSessionsRoute: AuthenticatedUsersSessionsRoute,
   AuthenticatedAppsIndexRoute: AuthenticatedAppsIndexRoute,
   AuthenticatedChatsIndexRoute: AuthenticatedChatsIndexRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
+  AuthenticatedMikrotikIndexRoute: AuthenticatedMikrotikIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
 }

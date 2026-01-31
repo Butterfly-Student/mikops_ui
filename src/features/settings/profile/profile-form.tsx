@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react'
 import { z } from 'zod'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from '@tanstack/react-router'
-import { showSubmittedData } from '@/lib/show-submitted-data'
-import { cn } from '@/lib/utils'
+import { Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
+import { useAuthStore } from '@/stores/auth-store'
+import { userApi } from '@/lib/user-api'
+import { ApiClientError } from '@/lib/api-client'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -15,65 +18,116 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
 
 const profileFormSchema = z.object({
   username: z
-    .string('Please enter your username.')
+    .string()
+    .min(1, 'Please enter your username.')
     .min(2, 'Username must be at least 2 characters.')
-    .max(30, 'Username must not be longer than 30 characters.'),
-  email: z.email({
-    error: (iss) =>
-      iss.input === undefined
-        ? 'Please select an email to display.'
-        : undefined,
-  }),
-  bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.url('Please enter a valid URL.'),
-      })
-    )
-    .optional(),
+    .max(50, 'Username must not be longer than 50 characters.'),
+  email: z
+    .string()
+    .min(1, 'Please enter your email.')
+    .email('Please enter a valid email address.'),
+  fullname: z
+    .string()
+    .min(1, 'Please enter your full name.')
+    .min(2, 'Full name must be at least 2 characters.')
+    .max(255, 'Full name must not be longer than 255 characters.'),
+  phone: z
+    .string()
+    .max(20, 'Phone must not be longer than 20 characters.')
+    .optional()
+    .nullable(),
 })
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  bio: 'I own a computer.',
-  urls: [
-    { value: 'https://shadcn.com' },
-    { value: 'http://twitter.com/shadcn' },
-  ],
-}
-
 export function ProfileForm() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [isFetching, setIsFetching] = useState(true)
+  const { auth } = useAuthStore()
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues,
-    mode: 'onChange',
+    defaultValues: {
+      username: '',
+      email: '',
+      fullname: '',
+      phone: '',
+    },
   })
 
-  const { fields, append } = useFieldArray({
-    name: 'urls',
-    control: form.control,
-  })
+  // Fetch user profile on mount
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        setIsFetching(true)
+        const profile = await userApi.getProfile()
+
+        // Update form with fetched data
+        form.reset({
+          username: profile.username,
+          email: profile.email,
+          fullname: profile.fullname,
+          phone: profile.phone || '',
+        })
+
+        // Update auth store if needed
+        if (!auth.user || auth.user.id !== profile.id) {
+          auth.setUser(profile)
+        }
+      } catch (error) {
+        if (error instanceof ApiClientError) {
+          toast.error(`Failed to load profile: ${error.message}`)
+        } else {
+          toast.error('Failed to load profile')
+        }
+      } finally {
+        setIsFetching(false)
+      }
+    }
+
+    fetchProfile()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  async function onSubmit(data: ProfileFormValues) {
+    setIsLoading(true)
+
+    try {
+      const updatedUser = await userApi.updateProfile({
+        username: data.username,
+        email: data.email,
+        fullname: data.fullname,
+        phone: data.phone || null,
+      })
+
+      // Update auth store with new user data
+      auth.setUser(updatedUser)
+
+      toast.success('Profile updated successfully!')
+    } catch (error) {
+      if (error instanceof ApiClientError) {
+        toast.error(`Failed to update profile: ${error.message}`)
+      } else {
+        toast.error('Failed to update profile')
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  if (isFetching) {
+    return (
+      <div className='flex items-center justify-center py-8'>
+        <Loader2 className='h-8 w-8 animate-spin text-muted-foreground' />
+      </div>
+    )
+  }
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit((data) => showSubmittedData(data))}
-        className='space-y-8'
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <FormField
           control={form.control}
           name='username'
@@ -81,11 +135,11 @@ export function ProfileForm() {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder='shadcn' {...field} />
+                <Input placeholder='Enter your username' {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
+                pseudonym.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -97,21 +151,15 @@ export function ProfileForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder='Select a verified email to display' />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value='m@example.com'>m@example.com</SelectItem>
-                  <SelectItem value='m@google.com'>m@google.com</SelectItem>
-                  <SelectItem value='m@support.com'>m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <Input
+                  type='email'
+                  placeholder='Enter your email'
+                  {...field}
+                />
+              </FormControl>
               <FormDescription>
-                You can manage verified email addresses in your{' '}
-                <Link to='/'>email settings</Link>.
+                Your email address for account notifications and recovery.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -119,58 +167,44 @@ export function ProfileForm() {
         />
         <FormField
           control={form.control}
-          name='bio'
+          name='fullname'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bio</FormLabel>
+              <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder='Tell us a little bit about yourself'
-                  className='resize-none'
-                  {...field}
-                />
+                <Input placeholder='Enter your full name' {...field} />
               </FormControl>
               <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
+                Your full name as it will appear in the system.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div>
-          {fields.map((field, index) => (
-            <FormField
-              control={form.control}
-              key={field.id}
-              name={`urls.${index}.value`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className={cn(index !== 0 && 'sr-only')}>
-                    URLs
-                  </FormLabel>
-                  <FormDescription className={cn(index !== 0 && 'sr-only')}>
-                    Add links to your website, blog, or social media profiles.
-                  </FormDescription>
-                  <FormControl className={cn(index !== 0 && 'mt-1.5')}>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
-          <Button
-            type='button'
-            variant='outline'
-            size='sm'
-            className='mt-2'
-            onClick={() => append({ value: '' })}
-          >
-            Add URL
-          </Button>
-        </div>
-        <Button type='submit'>Update profile</Button>
+        <FormField
+          control={form.control}
+          name='phone'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone Number (Optional)</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder='Enter your phone number'
+                  {...field}
+                  value={field.value || ''}
+                />
+              </FormControl>
+              <FormDescription>
+                Your contact phone number for account-related communications.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type='submit' disabled={isLoading}>
+          {isLoading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+          Update profile
+        </Button>
       </form>
     </Form>
   )

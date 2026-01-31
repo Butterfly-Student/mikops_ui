@@ -7,7 +7,9 @@ import { Loader2, LogIn } from 'lucide-react'
 import { toast } from 'sonner'
 import { IconFacebook, IconGithub } from '@/assets/brand-icons'
 import { useAuthStore } from '@/stores/auth-store'
-import { sleep, cn } from '@/lib/utils'
+import { authApi } from '@/lib/auth-api'
+import { ApiClientError } from '@/lib/api-client'
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -21,9 +23,7 @@ import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 
 const formSchema = z.object({
-  email: z.email({
-    error: (iss) => (iss.input === '' ? 'Please enter your email' : undefined),
-  }),
+  username: z.string().min(1, 'Please enter your username'),
   password: z
     .string()
     .min(1, 'Please enter your password')
@@ -46,39 +46,41 @@ export function UserAuthForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
+      username: '',
       password: '',
     },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
 
-    toast.promise(sleep(2000), {
-      loading: 'Signing in...',
-      success: () => {
-        setIsLoading(false)
+    try {
+      // Use auth API service to login
+      const response = await authApi.login({
+        username: data.username,
+        password: data.password,
+      })
 
-        // Mock successful authentication with expiry computed at success time
-        const mockUser = {
-          accountNo: 'ACC001',
-          email: data.email,
-          role: ['user'],
-          exp: Date.now() + 24 * 60 * 60 * 1000, // 24 hours from now
-        }
+      // Store access token and refresh token with their expiration times
+      auth.setAccessToken(response.access_token, response.expires_in)
+      auth.setRefreshToken(response.refresh_token, response.refresh_expires_in)
 
-        // Set user and access token
-        auth.setUser(mockUser)
-        auth.setAccessToken('mock-access-token')
+      // Store user data
+      auth.setUser(response.user)
 
-        // Redirect to the stored location or default to dashboard
-        const targetPath = redirectTo || '/'
-        navigate({ to: targetPath, replace: true })
+      toast.success(`Welcome back, ${response.user.fullname || response.user.username}!`)
 
-        return `Welcome back, ${data.email}!`
-      },
-      error: 'Error',
-    })
+      const targetPath = redirectTo || '/'
+      navigate({ to: targetPath, replace: true })
+    } catch (error) {
+      if (error instanceof ApiClientError) {
+        toast.error(error.message)
+      } else {
+        toast.error(error instanceof Error ? error.message : 'Something went wrong')
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -90,12 +92,12 @@ export function UserAuthForm({
       >
         <FormField
           control={form.control}
-          name='email'
+          name='username'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder='name@example.com' {...field} />
+                <Input placeholder='Enter your username' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
